@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/create-account HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Peter",
+    "lastName": "Farmer",
+    "email": "test@email.com",
+    "displayName": "dynamo",
+    "passwordHash": "test"
+}
+
+###
+POST http://localhost:3000/api/create-account HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Daniel",
+    "lastName": "Grayson",
+    "email": "test2@email.com",
+    "displayName": "Zeke",
+    "phone": "0478618703",
+    "passwordHash": "test2"
+}
