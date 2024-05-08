@@ -6,7 +6,7 @@ content-type: application/json
     "lastName": "Farmer",
     "email": "test@email.com",
     "displayName": "dynamo",
-    "passwordHash": "test"
+    "password": "test"
 }
 
 ###
@@ -19,5 +19,5 @@ content-type: application/json
     "email": "test2@email.com",
     "displayName": "Zeke",
     "phone": "0478618703",
-    "passwordHash": "test2"
+    "password": "test2"
 }

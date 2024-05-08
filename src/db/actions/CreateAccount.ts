@@ -1,6 +1,6 @@
-import connection from "../db";
+import getNewConnection from "../db";
 
-function createAccount(
+export function createAccount(
     firstName: string,
     lastName: string,
     email: string,
@@ -8,9 +8,12 @@ function createAccount(
     displayName: string,
     passwordHash: string
     ) {
+    const connection = getNewConnection();
     connection.connect((err: string) => {
-        console.log("COULDN'T CONNECT TO CREATE ACCOUNT: " + err);
-        return;
+        if (err) {
+            console.log("COULDN'T CONNECT TO CREATE ACCOUNT: " + err);
+            return err;
+        }
     })
 
     let query;
@@ -25,5 +28,10 @@ function createAccount(
 
     connection.query(query, (error:any, results: any, fields: any) => {
         if (error) throw error;
+        return "error";
     })
+
+    connection.end();
+
+    return "";
 }
