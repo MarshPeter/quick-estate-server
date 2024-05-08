@@ -1,0 +1,6 @@
+GET http://localhost:3000/api/confirm-login/dynamo/test
+Content-Type: application/json
+
+###
+GET http://localhost:3000/api/confirm-login/dynamo/test2
+Content-Type: application/json

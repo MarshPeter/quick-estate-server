@@ -7,7 +7,7 @@ export function createAccount(
     phone: string | null,
     displayName: string,
     passwordHash: string
-    ) {
+    ) : string {
     const connection = getNewConnection();
     connection.connect((err: string) => {
         if (err) {
