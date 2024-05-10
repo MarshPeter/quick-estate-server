@@ -1,0 +1,14 @@
+POST http://localhost:3000/api/add-listing HTTP/1.1
+content-type: application/json
+
+{
+    "accountId": 1,
+    "title": "Stone Head",
+    "location": "Your imagination",
+    "auctionDate": "2024/05/10",
+    "auctioneerName": "Peter",
+    "auctionLocation": "My House",
+    "reservePrice": "20000.00",
+    "primaryImageUrl": "https://utfs.io/f/88f8ecb5-cc38-4165-9207-c4a8150f86a2-1tcrqd.png",
+    "description": "A stone head"
+}

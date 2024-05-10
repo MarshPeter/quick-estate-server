@@ -118,7 +118,37 @@ router.post('/create-account', async (req: Request, res: Response) => {
     }
 
     connection.end();
-})
+});
+
+router.post('/add-listing', async (req: Request, res: Response) => {
+    console.log(req.body);
+    const accountId = req.body.accountId;
+    const title = req.body.title;
+    const location = req.body.title;
+    const auctionDate = req.body.auctionDate;
+    const auctioneerName = req.body.auctioneerName;
+    const auctioneerLocation = req.body.auctionLocation;
+    const reservePrice = req.body.reservePrice;
+    const primaryImageUrl = req.body.primaryImageUrl;
+    const description = req.body.description;
+    const wishlistCount = 0;
+    const sold = 0;
+
+    const connection = getNewConnection();
+    const queryAsync = promisify(connection.query).bind(connection);
+
+    const query = `INSERT INTO listing (account_id, title, location, auctionDate, auctioneerName, auctionLocation, reservePrice, primaryImageUrl, description, wishlistCount, sold) VALUES(${accountId}, '${title}', '${location}', '${auctionDate}', '${auctioneerName}', '${auctioneerLocation}', '${reservePrice}', '${primaryImageUrl}', '${description}', '${wishlistCount}', '${sold}')`;
+
+    try {
+        await queryAsync(query);
+    } catch (error) {
+        console.log("THERE WAS AN ERROR: ", error);
+        res.status(500).json({err: "There was a problem uploading your listing to the database. Please try again"});
+        return;
+    }
+
+    res.status(200);
+});
 
 // currently will only handle displayName to reduce complexity
 router.get('/confirm-login/:displayName/:passwordEntered', (req: Request, res: Response) => {
@@ -146,6 +176,47 @@ router.get('/confirm-login/:displayName/:passwordEntered', (req: Request, res: R
             res.status(404).json({err: "couldn't confirm credentials on the server"});
         }
     })
+
+    connection.end();
+})
+
+router.get('/get-profile/:id', async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const connection = getNewConnection();
+
+    connection.connect((err: string) => {
+        if (err) {
+            console.log("COULDN'T CONNECT TO CREATE ACCOUNT: " + err);
+            res.status(500).json({err: "Couldn't connect to the database, contact the administrators"});
+            return;
+        }
+    })
+
+    const queryAsync = promisify(connection.query).bind(connection);
+    let query = `SELECT * FROM account WHERE account.id=${id}`;
+    let currentResult = [];
+
+    try {
+        const result = await queryAsync(query);
+        currentResult = result[0];
+    } catch (error) {
+        console.log(error);
+    }
+
+    query = `SELECT * FROM listing WHERE account_id = ${id}`;
+
+    try {
+        const result = await queryAsync(query);
+        currentResult.listings = result;
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({err: "Couldn't connect to the database, contact the administrators"});
+        return;
+    }
+
+    console.log(currentResult);
+    res.status(200).json(currentResult);
 
     connection.end();
 })
