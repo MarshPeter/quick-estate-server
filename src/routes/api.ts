@@ -212,12 +212,40 @@ router.get('/get-profile/:id', async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({err: "Couldn't connect to the database, contact the administrators"});
+        connection.end();
         return;
     }
 
     console.log(currentResult);
     res.status(200).json(currentResult);
 
+    connection.end();
+})
+
+router.get('/single-listing/:id', async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const connection = getNewConnection();
+
+    connection.connect((err: string) => {
+        if (err) {
+            console.log("COULDN'T CONNECT TO CREATE ACCOUNT: " + err);
+            res.status(500).json({err: "Couldn't connect to the database, contact the administrators"});
+            return;
+        }
+    })
+
+    const queryAsync = promisify(connection.query).bind(connection);
+    let query = `SELECT * FROM listing WHERE listing.id=${id}`;
+
+    try {
+        const result = await queryAsync(query);
+        res.status(200).json(result);
+    } catch (error) {
+        console.log("ERROR RETRIEVING LIST: ", error);
+        res.status(500).json({err: "There were server issues, please try again later"});
+    }
+    
     connection.end();
 })
 

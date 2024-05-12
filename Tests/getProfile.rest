@@ -1,2 +1,6 @@
 GET http://localhost:3000/api/get-profile/1
 Content-Type: application/json
+
+###
+GET http://localhost:3000/api/get-profile/21
+Content-Type: application/json
