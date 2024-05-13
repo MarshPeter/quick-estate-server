@@ -1,0 +1,14 @@
+PUT http://localhost:3000/api/update-listing HTTP/1.1
+content-type: application/json
+
+{
+    "id": 5,
+    "title": "Stone Head",
+    "location": "Your imagination",
+    "auctionDate": "2024/05/10",
+    "auctioneerName": "Farmer",
+    "auctionLocation": "My House",
+    "reservePrice": "20000.00",
+    "primaryImageUrl": "https://utfs.io/f/cdf37060-78b4-4054-b6b1-932b61bfaf42-7kcux2.png",
+    "description": "A stone head"
+}

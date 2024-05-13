@@ -249,5 +249,52 @@ router.get('/single-listing/:id', async (req: Request, res: Response) => {
     connection.end();
 })
 
+router.put('/update-listing/', async (req: Request, res: Response) => {
+    const id = req.body.id;
+    const title = req.body.title;
+    const location = req.body.location;
+    const auctionDate = req.body.auctionDate;
+    const auctioneerName = req.body.auctioneerName;
+    const auctionLocation = req.body.auctionLocation;
+    const reservePrice = req.body.reservePrice;
+    const primaryImageUrl = req.body.primaryImageUrl;
+    const description = req.body.description;
+
+    const connection = getNewConnection();
+
+    connection.connect((err: string) => {
+        if (err) {
+            console.log("COULDN'T CONNECT TO CREATE ACCOUNT: " + err);
+            res.status(500).json({err: "Couldn't connect to the database, contact the administrators"});
+            return;
+        }
+    })
+
+    const queryAsync = promisify(connection.query).bind(connection);
+    const updateQuery = `
+    UPDATE listing
+    SET
+        title = '${title}',
+        location = '${location}',
+        auctionDate = '${auctionDate}',
+        auctioneerName = '${auctioneerName}',
+        auctionLocation = '${auctionLocation}',
+        reservePrice = ${reservePrice},
+        primaryImageURL = '${primaryImageUrl}',
+        description = '${description}'
+    WHERE
+        id = ${id}`;
+
+    try {
+        await queryAsync(updateQuery);
+        res.status(200);
+    } catch (err) {
+        console.log('UPDATE LISTING ERROR', err);
+        res.status(500).json({err: "There was an error with the server, please contact admin"});
+    }
+
+    connection.end();
+})
+
 export default router;
 
